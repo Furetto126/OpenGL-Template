@@ -1,0 +1,5 @@
+.idea
+cmake-build-debug-mingw-clang
+
+libs/glfw
+libs/glm
