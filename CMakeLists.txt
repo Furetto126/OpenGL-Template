@@ -45,3 +45,8 @@ target_compile_definitions(OpenGL_Template_App PRIVATE GLFW_STATIC)
 # ---
 set(GLM ${LIB_DIR}/glm)
 target_include_directories(OpenGL_Template_App PRIVATE ${GLM})
+
+# GSPROP
+# ------
+set(GSPROP ${LIB_DIR}/gsprop)
+target_include_directories(OpenGL_Template_App PRIVATE ${GSPROP})
