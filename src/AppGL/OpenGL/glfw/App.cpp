@@ -1,16 +1,15 @@
 #include "App.h"
 
-#include <string>
-
-#include "Window.h"
-#include "glDebug.h"
-
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
+#include <string>
+
+#include "../glDebug.h"
+
 namespace AppGL
 {
-        App::App(AppOptions options): window(Window(options.width, options.height, options.title))
+        App::App(AppOptions options): window(Window(options))
         {
                 if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
                         throw std::runtime_error("Failed to initialize GLAD");
@@ -26,7 +25,6 @@ namespace AppGL
                 
                 // Check extensions
                 if (!options.extensions.has_value()) return;
-                
                 for (auto extension : options.extensions.value())
                         if (!extension)
                                 throw std::runtime_error(
@@ -34,24 +32,23 @@ namespace AppGL
                                         std::to_string(extension) + "\"" + " not found."
                                 );
         }
-    
+        
         void App::run()
         {
                 onStart();
-                
                 while (!glfwWindowShouldClose((GLFWwindow*)window)) {
                         glfwPollEvents();
-                        
                         onUpdate();
-                        
                         glfwSwapBuffers((GLFWwindow*)window);
                 }
                 
                 onDestroy();
+                
+                glfwDestroyWindow((GLFWwindow*)window);
                 glfwTerminate();
         }
-    
-    void App::close() const { glfwSetWindowShouldClose((GLFWwindow*)window, true); }
+        
+        void App::close() const { glfwSetWindowShouldClose((GLFWwindow*)window, true); }
 }
 
 int main()
@@ -59,6 +56,5 @@ int main()
         AppGL::App* app = AppGL::InitApp();
         app->run();
         delete app;
-        
         return 0;
 }

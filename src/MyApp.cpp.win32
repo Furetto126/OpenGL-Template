@@ -1,0 +1,67 @@
+#include <utility>
+
+#include "AppGL/OpenGL/win32/Win32App.h"
+#include "AppGL/shader/Shader.h"
+
+class MyApp : public AppGL::Win32App
+{
+public:
+        explicit MyApp(HINSTANCE hInstance, AppGL::AppOptions options)
+                : AppGL::Win32App(hInstance, std::move(options)) {}
+
+private:
+        std::shared_ptr<Shader> shader;
+        float frames = 0.0f;
+        
+        void onStart() override
+        {
+                // Init Shader with fragment and vertex code.
+                const char vertCode[] = {
+#embed "../src/shadersource/vertex.vert"
+                        , '\0' };
+                
+                const char fragCode[] = {
+#embed "../src/shadersource/fragment.frag"
+                        , '\0' };
+                
+                shader = std::make_shared<Shader>(vertCode, fragCode);
+                shader->addUniform("frames", frames);
+        }
+        
+        void onUpdate() override
+        {
+                frames++;
+                
+                shader->setUniform("frames", frames);
+                shader->drawFullScreenQuad();
+        }
+        
+        void onDestroy() override {}
+};
+
+AppGL::Win32App* AppGL::InitApp(HINSTANCE hInstance)
+{
+        AppOptions options;
+        options.width = 800;
+        options.height = 600;
+        options.title = "OpenGL template window!";
+        
+        options.GLAttributes = {
+                {WGL_CONTEXT_MAJOR_VERSION_ARB, 3},
+                {WGL_CONTEXT_MINOR_VERSION_ARB, 3},
+                {WGL_CONTEXT_PROFILE_MASK_ARB,  WGL_CONTEXT_CORE_PROFILE_BIT_ARB},
+        };
+        options.pixelFormatAttributes = {
+                {WGL_DRAW_TO_WINDOW_ARB,     GL_TRUE},
+                {WGL_SUPPORT_OPENGL_ARB, GL_TRUE},
+                {WGL_DOUBLE_BUFFER_ARB, GL_TRUE},
+                {WGL_ACCELERATION_ARB, WGL_FULL_ACCELERATION_ARB},
+                {WGL_PIXEL_TYPE_ARB, WGL_TYPE_RGBA_ARB},
+                {WGL_COLOR_BITS_ARB, 32},
+                {WGL_DEPTH_BITS_ARB, 24},
+                {WGL_STENCIL_BITS_ARB, 8},
+        };
+        
+        AppGL::Win32App* app = new MyApp(hInstance, options);
+        return app;
+}

@@ -1,6 +1,6 @@
 #include <utility>
 
-#include "AppGL/OpenGL/App.h"
+#include "AppGL/OpenGL/glfw/App.h"
 #include "AppGL/shader/Shader.h"
 
 class MyApp : public AppGL::App
