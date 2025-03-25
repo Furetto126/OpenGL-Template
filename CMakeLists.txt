@@ -10,6 +10,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_C_STANDARD 23)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
+# IMPORTANT!
+option(USE_WIN32 "Use the Win32 OpenGL implementation" ON)
+message(STATUS "USE_WIN32 is set to: ${USE_WIN32}")
+
 # Recursively find all source files in source directory
 set(SRC_DIR ${PROJECT_SOURCE_DIR}/src)
 file(GLOB_RECURSE SOURCE_FILES
@@ -18,10 +22,6 @@ file(GLOB_RECURSE SOURCE_FILES
 )
 # Remove files for glfw or win32 Apps, we will specify which of the two to build later.
 list(FILTER SOURCE_FILES EXCLUDE REGEX ".*/AppGL/OpenGL/(glfw|win32)/.*")
-
-# IMPORTANT!
-option(USE_WIN32 "Use the Win32 OpenGL implementation" ON)
-message(STATUS "USE_WIN32 is set to: ${USE_WIN32}")
 
 if(USE_WIN32)
     file(GLOB_RECURSE PLATFORM_SOURCES
