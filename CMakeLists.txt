@@ -11,7 +11,7 @@ set(CMAKE_C_STANDARD 23)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 # IMPORTANT!
-option(USE_WIN32 "Use the Win32 OpenGL implementation" ON)
+option(USE_WIN32 "Use the Win32 OpenGL implementation" OFF)
 message(STATUS "USE_WIN32 is set to: ${USE_WIN32}")
 
 # Recursively find all source files in source directory

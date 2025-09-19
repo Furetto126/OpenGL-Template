@@ -1,5 +1,8 @@
 #include "Window.h"
 
+#include <stdexcept>
+
+#include <glad/glad.h>
 #include "GLFW/glfw3.h"
 
 namespace AppGL
@@ -32,5 +35,17 @@ namespace AppGL
                         glfwSetWindowPos(window, options.position.value().first, options.position.value().second);
                 
                 glfwMakeContextCurrent(window);
+                glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
+                glfwSwapInterval(0);
+        }
+
+        void Window::framebufferSizeCallback(GLFWwindow* window, int newWidth, int newHeight)
+        {
+                glViewport(0, 0, newWidth, newHeight);
+        }
+
+        float Window::getTime() const
+        {
+                return (float)glfwGetTime();
         }
 }
