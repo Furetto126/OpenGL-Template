@@ -1,0 +1,9 @@
+Shader compilation failed! 0(47) : error C1503: undefined variable "i"
+0(48) : error C1503: undefined variable "i"
+
+Shader compilation failed! 0(47) : error C1503: undefined variable "i"
+0(48) : error C1503: undefined variable "i"
+
+FPS: 3209.72
+FPS: 2693.84
+FPS: 3269.78

@@ -34,6 +34,7 @@ private:
                 , '\0' };
 
                 computeShader = std::make_shared<ComputeShader>(computeCode, vertCode, fragCode);
+                computeShader->addUniform("resolution", glm::vec2(0.0));
                 computeShader->addUniform("time", 0.0f);
         }
 
@@ -47,6 +48,8 @@ private:
                         frames = 0;
                 } else frames++;
 
+
+                computeShader->setUniform("resolution", this->window.getResolution());
                 computeShader->setUniform("time", currentFrame);
                 computeShader->drawFullScreenQuad(800, 600, 0);
         }

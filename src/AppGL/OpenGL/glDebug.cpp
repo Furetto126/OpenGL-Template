@@ -1,12 +1,15 @@
 #include "glDebug.h"
 
+#include "GLFW/glfw3.h"
 #include <iostream>
 
 namespace AppGL
 {
+        static double lastTime = 0.0f;
         void APIENTRY glDebugOutput(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
                                     const GLchar* message, const void* userParam)
         {
+                if (glfwGetTime() - lastTime < 0.5) return;
                 if (severity != GL_DEBUG_SEVERITY_HIGH) return;
                 
                 std::cerr << "OpenGL Debug Message:\n";
@@ -50,5 +53,7 @@ namespace AppGL
                 std::cerr << "\n";
                 
                 std::cerr << "Message: " << message << "\n\n";
+
+                lastTime = glfwGetTime();
         }
 }

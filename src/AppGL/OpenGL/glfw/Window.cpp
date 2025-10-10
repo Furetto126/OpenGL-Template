@@ -48,4 +48,11 @@ namespace AppGL
         {
                 return (float)glfwGetTime();
         }
+
+        glm::vec2 Window::getResolution() const
+        {
+                int width, height;
+                glfwGetWindowSize(window, &width, &height);
+                return { width, height };
+        }
 }
