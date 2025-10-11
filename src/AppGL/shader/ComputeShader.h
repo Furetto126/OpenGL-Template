@@ -6,6 +6,8 @@
 class ComputeShader
 {
 public:
+        uint32_t localSizeX = 1, localSizeY = 1, localSizeZ = 1;
+
         ComputeShader(const char* computeShaderCode, const char* vertexShaderCode, const char* fragmentShaderCode);
 
         void drawFullScreenQuad(const uint32_t width, const uint32_t height, const uint32_t binding);
@@ -25,9 +27,7 @@ private:
 
         std::shared_ptr<Shader> renderShader;
         uint32_t texture{};
-        int texBinding{};
         uint32_t texWidth{}, texHeight{};
-        bool isTextureInitialized = false;
 
         std::vector<std::string> initializedUniforms{};
 
@@ -45,7 +45,7 @@ void ComputeShader::addUniform(const std::string &name, const T &value)
         });
 
         if (isPresent)
-                std::cout << "Cannot add uniform as it was not already initialized. Name: " << name << std::endl;
+                std::cout << "Cannot add uniform as it was already initialized. Name: " << name << std::endl;
 
         initializedUniforms.push_back(name);
 

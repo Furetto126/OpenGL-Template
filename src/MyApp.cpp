@@ -18,6 +18,8 @@ private:
         float lastFrame = 0.0f;
         float frames = 0.0f;
 
+        int texBinding = 0;
+
         void onStart() override
         {
                 // Init Shader with fragment and vertex code.
@@ -34,6 +36,10 @@ private:
                 , '\0' };
 
                 computeShader = std::make_shared<ComputeShader>(computeCode, vertCode, fragCode);
+                computeShader->localSizeX = 8;
+                computeShader->localSizeY = 4;
+
+                computeShader->addUniform("tex", texBinding);
                 computeShader->addUniform("resolution", glm::vec2(0.0));
                 computeShader->addUniform("time", 0.0f);
         }
@@ -48,10 +54,14 @@ private:
                         frames = 0;
                 } else frames++;
 
+                glm::ivec2 resolution = this->window.getResolution();
 
-                computeShader->setUniform("resolution", this->window.getResolution());
+                computeShader->setUniform("tex", texBinding);
+                computeShader->setUniform("resolution", (glm::vec2)resolution);
                 computeShader->setUniform("time", currentFrame);
-                computeShader->drawFullScreenQuad(800, 600, 0);
+
+                // Draw
+                computeShader->drawFullScreenQuad(resolution.x, resolution.y, texBinding);
         }
         
         void onDestroy() override {}
