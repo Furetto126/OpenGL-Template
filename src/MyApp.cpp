@@ -51,6 +51,7 @@ private:
                 lastFrame = currentFrame;
                 if (frames > 500) {
                         std::cout << "FPS: " << 1 / deltaTime << std::endl;
+                        std::cout << "Width " << this->window.getWidth() << " Height " << this->window.getHeight() << std::endl;
                         frames = 0;
                 } else frames++;
 

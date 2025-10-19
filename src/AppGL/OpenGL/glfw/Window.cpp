@@ -35,18 +35,20 @@ namespace AppGL
                         glfwSetWindowPos(window, options.position.value().first, options.position.value().second);
                 
                 glfwMakeContextCurrent(window);
+                glfwSetWindowUserPointer(window, this);
                 glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
+
                 glfwSwapInterval(0);
         }
 
-        void Window::framebufferSizeCallback(GLFWwindow* window, int newWidth, int newHeight)
+        void Window::updateWindowSize() const
         {
-                glViewport(0, 0, newWidth, newHeight);
+                glViewport(0, 0, width, height);
         }
 
-        float Window::getTime() const
+        float Window::getTime()
         {
-                return (float)glfwGetTime();
+                return static_cast<float>(glfwGetTime());
         }
 
         glm::vec2 Window::getResolution() const
@@ -54,5 +56,32 @@ namespace AppGL
                 int width, height;
                 glfwGetWindowSize(window, &width, &height);
                 return { width, height };
+        }
+
+        void Window::setResolution(const glm::uvec2 newResolution)
+        {
+                width = newResolution.x;
+                height = newResolution.y;
+                updateWindowSize();
+        }
+
+        void  Window::setWidth(const uint32_t newWidth)
+        {
+                width = newWidth;
+                updateWindowSize();
+        }
+
+        void  Window::setHeight(const uint32_t newHeight)
+        {
+                height = newHeight;
+                updateWindowSize();
+        }
+
+        void Window::framebufferSizeCallback(GLFWwindow* window, int newWidth, int newHeight)
+        {
+                auto* thisWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
+                thisWindow->setResolution(glm::uvec2(newWidth, newHeight));
+
+                glViewport(0, 0, newWidth, newHeight);
         }
 }
